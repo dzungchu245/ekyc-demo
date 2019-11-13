@@ -1,0 +1,20 @@
+.manage-container {
+  margin: 0;
+}
+
+.left-content {
+  position: relative;
+  padding-left: 0 !important;
+  padding-right: 0;
+  border-right: 1px solid lightgray;
+  min-width: 17rem;
+  min-height: calc(100vh - 4rem);
+}
+
+.main-content {
+  padding: 1rem;
+}
+
+/deep/ .black-overlay {
+  position: fixed !important;
+}

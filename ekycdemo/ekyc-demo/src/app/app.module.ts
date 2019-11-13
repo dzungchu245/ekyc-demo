@@ -12,6 +12,8 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {TokenInterceptor} from './core/interceptor';
 import {routing} from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HomeComponent } from './home/home.component';
+import { LeftMenuComponent } from './left-menu/left-menu.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginComponent,
     AddUserComponent,
     EditUserComponent,
-    ListUserComponent
+    ListUserComponent,
+    HomeComponent,
+    LeftMenuComponent
   ],
   imports: [
     BrowserModule,
