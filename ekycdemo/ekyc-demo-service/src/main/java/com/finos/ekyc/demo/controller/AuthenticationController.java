@@ -3,18 +3,16 @@ package com.finos.ekyc.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.finos.ekyc.demo.config.JwtTokenUtil;
 import com.finos.ekyc.demo.model.ApiResponse;
-import com.finos.ekyc.demo.model.AuthToken;
 import com.finos.ekyc.demo.model.LoginUser;
-import com.finos.ekyc.demo.model.User;
+import com.finos.ekyc.demo.model.UserDto;
 import com.finos.ekyc.demo.service.UserService;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -31,13 +29,14 @@ public class AuthenticationController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/generate-token", method = RequestMethod.POST)
-    public ApiResponse<AuthToken> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
+    @PostMapping("/generate-token")
+    public ApiResponse<UserDto> register(@RequestBody LoginUser loginUser) {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getUsername(), loginUser.getPassword()));
-        final User user = userService.findOne(loginUser.getUsername());
+        final UserDto user = userService.findOne(loginUser.getUsername());
         final String token = jwtTokenUtil.generateToken(user);
-        return new ApiResponse<>(200, "success",new AuthToken(token, user.getUsername()));
+        user.setToken(token);
+        return new ApiResponse<>(200, "success", user);
     }
 
 }

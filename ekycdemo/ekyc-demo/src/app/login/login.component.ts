@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Router} from "@angular/router";
-import {ApiService} from "../core/api.service";
+import {ApiService, LOGGED_USER, TOKEN} from "../core/api.service";
 
 @Component({
   selector: 'app-login',
@@ -11,8 +11,10 @@ import {ApiService} from "../core/api.service";
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
-  invalidLogin: boolean = false;
-  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService) { }
+  invalidLogin = false;
+  constructor(private formBuilder: FormBuilder, private router: Router, private apiService: ApiService) {
+    this.apiService.clearSession();
+  }
 
   onSubmit() {
     if (this.loginForm.invalid) {
@@ -23,11 +25,11 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.controls.password.value
     }
     this.apiService.login(loginPayload).subscribe(data => {
-      debugger;
-      if(data.status === 200) {
-        window.localStorage.setItem('token', data.result.token);
-        this.router.navigate(['list-user']);
-      }else {
+      // debugger;
+      if (data.status === 200) {
+        this.apiService.storeUserLocal(data.result);
+        this.router.navigate(['home']);
+      } else {
         this.invalidLogin = true;
         alert(data.message);
       }
@@ -35,7 +37,6 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    window.localStorage.removeItem('token');
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.compose([Validators.required])],
       password: ['', Validators.required]

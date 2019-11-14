@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {ApiService} from './core/api.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'ekyc-demo';
+  constructor(private apiService: ApiService) {}
+  isLoggedIn() {
+    return this.apiService.getUserToken();
+  }
 }

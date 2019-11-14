@@ -1,5 +1,10 @@
 package com.finos.ekyc.demo.model;
 
+import java.beans.Transient;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +14,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.micrometer.core.instrument.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +28,9 @@ import lombok.Setter;
 @Table(name = "ekyc_user")
 public class User {
 
+    public static final String DELIMITER = ";";
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
     @Column
     private String firstName;
@@ -34,8 +41,16 @@ public class User {
     @Column
     @JsonIgnore
     private String password;
+
     @Column
-    private long salary;
-    @Column
-    private int age;
+    private String roles;
+
+    @Transient
+    public List<String> getRoleList() {
+        if (StringUtils.isNotBlank(this.roles)) {
+            return Arrays.asList(this.roles.trim().split(DELIMITER));
+        } else {
+            return Collections.emptyList();
+        }
+    }
 }

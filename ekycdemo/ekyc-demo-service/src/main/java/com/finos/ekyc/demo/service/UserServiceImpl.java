@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,10 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 		return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
 	}
 
-	public List<User> findAll() {
+	public List<UserDto> findAll() {
 		List<User> list = new ArrayList<>();
 		userDao.findAll().iterator().forEachRemaining(list::add);
-		return list;
+		return list.stream().map(UserDto::new).collect(Collectors.toList());
 	}
 
 	@Override
@@ -52,35 +53,34 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	}
 
 	@Override
-	public User findOne(String username) {
-		return userDao.findByUsername(username);
+	public UserDto findOne(String username) {
+		return new UserDto(userDao.findByUsername(username));
 	}
 
 	@Override
-	public User findById(Long id) {
+	public UserDto findById(Long id) {
 		Optional<User> optionalUser = userDao.findById(id);
-		return optionalUser.isPresent() ? optionalUser.get() : null;
+		return optionalUser.map(UserDto::new).orElse(new UserDto());
 	}
 
     @Override
     public UserDto update(UserDto userDto) {
-        User user = findById(userDto.getId());
-        if(user != null) {
-            BeanUtils.copyProperties(userDto, user, "password");
-            userDao.save(user);
+        Optional<User> optionalUser = userDao.findById(userDto.getId());
+        if(optionalUser.isPresent()) {
+            BeanUtils.copyProperties(userDto, optionalUser.get(), "password");
+            userDao.save(optionalUser.get());
         }
         return userDto;
     }
 
     @Override
-    public User save(UserDto user) {
+    public UserDto save(UserDto user) {
 	    User newUser = new User();
 	    newUser.setUsername(user.getUsername());
 	    newUser.setFirstName(user.getFirstName());
 	    newUser.setLastName(user.getLastName());
 	    newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
-		newUser.setAge(user.getAge());
-		newUser.setSalary(user.getSalary());
-        return userDao.save(newUser);
+	    newUser.setRoles(user.getRoles());
+		return new UserDto(userDao.save(newUser));
     }
 }

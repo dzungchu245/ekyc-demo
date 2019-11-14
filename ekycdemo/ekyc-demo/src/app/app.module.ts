@@ -14,6 +14,9 @@ import {routing} from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomeComponent } from './home/home.component';
 import { LeftMenuComponent } from './left-menu/left-menu.component';
+import {HasPermissionDirective} from './core/hasPermission.directive';
+import {LocalStorageService} from "./core/local-storage.service";
+import {MatButtonModule, MatInputModule, MatSelectModule} from "@angular/material";
 
 @NgModule({
   declarations: [
@@ -23,16 +26,23 @@ import { LeftMenuComponent } from './left-menu/left-menu.component';
     EditUserComponent,
     ListUserComponent,
     HomeComponent,
-    LeftMenuComponent
+    LeftMenuComponent,
+    HasPermissionDirective
   ],
   imports: [
     BrowserModule,
     routing,
     ReactiveFormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule
   ],
-  providers: [ApiService, {provide: HTTP_INTERCEPTORS,
+  providers: [
+    ApiService,
+    LocalStorageService,
+    {provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptor,
     multi : true}],
   bootstrap: [AppComponent]

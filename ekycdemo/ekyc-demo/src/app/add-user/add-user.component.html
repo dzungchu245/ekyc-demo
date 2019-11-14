@@ -1,26 +1,33 @@
-<div class="col-md-6 user-container">
+<div class="col-md-6 user-container" *hasPermission="['ROLE_ADMIN']">
   <h2 class="text-center">Add User</h2>
   <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <label for="username">User Name:</label>
-      <input type="text" formControlName="username" placeholder="username" name="username" class="form-control" id="username">
-    </div>
+    <mat-form-field class="form-group w-100">
+      <input matInput formControlName="username" placeholder="User Name" name="username" id="username">
+    </mat-form-field>
 
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" formControlName="password" placeholder="password" name="password" class="form-control" id="password">
-    </div>
+   <mat-form-field class="form-group w-100">
+      <input matInput type="password" formControlName="password" placeholder="Password" name="password" class="form-control" id="password">
+    </mat-form-field>
 
-    <div class="form-group">
-      <label for="firstName">First Name:</label>
-      <input formControlName="firstName" placeholder="First Name" name="firstName" class="form-control" id="firstName">
-    </div>
+    <mat-form-field class="form-group w-100">
+      <input matInput formControlName="firstName" placeholder="First Name" name="firstName" id="firstName">
+    </mat-form-field>
 
-    <div class="form-group">
-      <label for="lastName">Last Name:</label>
-      <input formControlName="lastName" placeholder="Last name" name="lastName" class="form-control" id="lastName">
-    </div>
+    <mat-form-field class="form-group w-100">
+      <input matInput formControlName="lastName" placeholder="Last Name" name="lastName" id="lastName">
+    </mat-form-field>
 
-    <button class="btn btn-success">Update</button>
+    <mat-form-field class="form-group w-100">
+      <mat-label>Roles</mat-label>
+      <mat-select formControlName="roleList" placeholder="Roles" name="Roles" id="roleList" class="custom-mat-select" multiple>
+        <mat-option [value]="'ROLE_ADMIN'">ROLE_ADMIN</mat-option>
+        <mat-option [value]="'ROLE_USER'">ROLE_USER</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="w-100">
+      <button mat-raised-button (click)="onCancel()">Cancel</button>
+      <button mat-raised-button color="primary" class="ml-2">Update</button>
+    </div>
   </form>
 </div>

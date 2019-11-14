@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.finos.ekyc.demo.model.ApiResponse;
-import com.finos.ekyc.demo.model.User;
 import com.finos.ekyc.demo.model.UserDto;
 import com.finos.ekyc.demo.service.UserService;
 
@@ -28,17 +27,17 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ApiResponse<User> saveUser(@RequestBody UserDto user){
+    public ApiResponse<UserDto> saveUser(@RequestBody UserDto user){
         return new ApiResponse<>(HttpStatus.OK.value(), "User saved successfully.",userService.save(user));
     }
 
     @GetMapping
-    public ApiResponse<List<User>> listUser(){
+    public ApiResponse<List<UserDto>> listUser(){
         return new ApiResponse<>(HttpStatus.OK.value(), "User list fetched successfully.",userService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<User> getOne(@PathVariable Long id){
+    public ApiResponse<UserDto> getOne(@PathVariable Long id){
         return new ApiResponse<>(HttpStatus.OK.value(), "User fetched successfully.",userService.findById(id));
     }
 

@@ -1,4 +1,4 @@
-<div class="col-md-6 user-container">
+<div class="col-md-6 user-container" *hasPermission="['ROLE_ADMIN']">
   <h2 style="margin: auto"> User Details</h2>
   <button class="btn btn-danger" style="width:100px" (click)="addUser()"> Add User</button>
   <table class="table table-striped">
@@ -8,6 +8,7 @@
       <th>FirstName</th>
       <th>LastName</th>
       <th>UserName</th>
+      <th></th>
     </tr>
     </thead>
     <tbody>

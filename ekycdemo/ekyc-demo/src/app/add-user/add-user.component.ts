@@ -21,8 +21,7 @@ export class AddUserComponent implements OnInit {
       password: ['', Validators.required],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      age: ['', Validators.required],
-      salary: ['', Validators.required]
+      roleList: [[], Validators.required],
     });
 
   }
@@ -32,6 +31,10 @@ export class AddUserComponent implements OnInit {
       .subscribe( data => {
         this.router.navigate(['list-user']);
       });
+  }
+
+  onCancel() {
+    this.router.navigate(['list-user']);
   }
 
 }

@@ -5,7 +5,7 @@
 </nav>
 <router-outlet></router-outlet>-->
 <div class="row manage-container">
-  <div class="col-3 left-content">
+  <div class="col-3 left-content" *ngIf="isLoggedIn()">
     <app-left-menu></app-left-menu>
   </div>
 
